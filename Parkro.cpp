@@ -6,6 +6,7 @@ using namespace std;
 
 class Vehicle {
 private:
+
     string LicensePlate;
     string ownersDetails;
     string QRcode;
