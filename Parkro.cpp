@@ -53,24 +53,35 @@ public:
 };
 
 int main() {
-    Vehicle obj;
-    ParkingSpace obj1;
-    string LicensePlate, ownerDetails, QRCcode, location;
+    vector<Vehicle> vehicles;
+    vector<ParkingSpace> parkingSpaces;
+    
+    int n;
+    cout << "Enter the number of vehicles: ";
+    cin >> n;
 
-    cout << "Enter License Plate: ";
-    cin >> LicensePlate;
-    cout << "Enter Owner's Details: ";
-    cin >> ownerDetails;
-    cout << "Enter QR Code: ";
-    cin >> QRCcode;
+    for (int i = 0; i < n; i++) {
+        Vehicle obj;
+        string LicensePlate, ownerDetails, QRcode;
+        
+        cout << "Enter License Plate, Owner Details, and QR Code for Vehicle " << i + 1 << ": ";
+        cin >> LicensePlate >> ownerDetails >> QRcode;
+        
+        obj.setLicensePlate(LicensePlate);
+        obj.setownerDetails(ownerDetails);
+        obj.setQRcode(QRcode);
+        
+        vehicles.push_back(obj);
+    }
 
-    obj.setLicensePlate(LicensePlate);
-    obj.setownerDetails(ownerDetails);
-    obj.setQRcode(QRCcode);
-
-    cout << "License Plate: " << obj.getLicensePlate() << endl;
-    cout << "Owner's Details: " << obj.getownerDetails() << endl;
-    cout << "QR Code: " << obj.getQRcode() << endl;
+    cout << "\nVehicle Details:\n";
+    for (int i = 0; i < vehicles.size(); i++) {
+        cout << "Vehicle " << i + 1 << ":\n";
+        cout << "License Plate: " << vehicles[i].getLicensePlate() << endl;
+        cout << "Owner Details: " << vehicles[i].getownerDetails() << endl;
+        cout << "QR Code: " << vehicles[i].getQRcode() << endl;
+        cout << endl;
+    }
 
     return 0;
 }
