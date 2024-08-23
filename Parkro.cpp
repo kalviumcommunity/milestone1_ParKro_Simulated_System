@@ -15,10 +15,10 @@ private:
 
 public:
     Vehicle(){
-        totalVehicles++;
+        incrementTotalVehicle();
     }
     ~Vehicle(){
-        totalVehicles--;
+        decrementTotalVehicle();
     }
     string getLicensePlate() {
         return LicensePlate;
@@ -37,6 +37,12 @@ public:
     }
     void setQRcode(string QRcode) {
         this->QRcode = QRcode;
+    }
+    static void incrementTotalVehicle(){
+        totalVehicles++;
+    }
+    static void decrementTotalVehicle(){
+        totalVehicles--;
     }
     static int getTotalVehicle(){
         return totalVehicles;
