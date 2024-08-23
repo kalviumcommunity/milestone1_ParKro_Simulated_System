@@ -53,7 +53,7 @@ public:
 };
 
 int main() {
-    vector<Vehicle> vehicles;
+    vector<Vehicle*> vehicles;
     vector<ParkingSpace> parkingSpaces;
     
     int n;
@@ -61,15 +61,15 @@ int main() {
     cin >> n;
 
     for (int i = 0; i < n; i++) {
-        Vehicle obj;
+        Vehicle* obj = new Vehicle();
         string LicensePlate, ownerDetails, QRcode;
         
         cout << "Enter License Plate, Owner Details, and QR Code for Vehicle " << i + 1 << ": ";
         cin >> LicensePlate >> ownerDetails >> QRcode;
         
-        obj.setLicensePlate(LicensePlate);
-        obj.setownerDetails(ownerDetails);
-        obj.setQRcode(QRcode);
+        obj->setLicensePlate(LicensePlate);
+        obj->setownerDetails(ownerDetails);
+        obj->setQRcode(QRcode);
         
         vehicles.push_back(obj);
     }
@@ -77,11 +77,14 @@ int main() {
     cout << "\nVehicle Details:\n";
     for (int i = 0; i < vehicles.size(); i++) {
         cout << "Vehicle " << i + 1 << ":\n";
-        cout << "License Plate: " << vehicles[i].getLicensePlate() << endl;
-        cout << "Owner Details: " << vehicles[i].getownerDetails() << endl;
-        cout << "QR Code: " << vehicles[i].getQRcode() << endl;
+        cout << "License Plate: " << vehicles[i]->getLicensePlate() << endl;
+        cout << "Owner Details: " << vehicles[i]->getownerDetails() << endl;
+        cout << "QR Code: " << vehicles[i]->getQRcode() << endl;
         cout << endl;
+
+        delete vehicles[i];
     }
+    vehicles.clear();
 
     return 0;
 }
