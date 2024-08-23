@@ -11,7 +11,15 @@ private:
     string ownersDetails;
     string QRcode;
 
+    static int totalVehicles;
+
 public:
+    Vehicle(){
+        totalVehicles++;
+    }
+    ~Vehicle(){
+        totalVehicles--;
+    }
     string getLicensePlate() {
         return LicensePlate;
     }
@@ -30,7 +38,11 @@ public:
     void setQRcode(string QRcode) {
         this->QRcode = QRcode;
     }
+    static int getTotalVehicle(){
+        return totalVehicles;
+    }
 };
+int Vehicle::totalVehicles=0;
 
 class ParkingSpace {
 private:
@@ -85,6 +97,8 @@ int main() {
         delete vehicles[i];
     }
     vehicles.clear();
+    cout << "Total number of vehicles currently: " << Vehicle::getTotalVehicle() << endl;
+
 
     return 0;
 }
