@@ -91,7 +91,6 @@ int main() {
         
         vehicles.push_back(obj);
     }
-
     cout << "\nVehicle Details:\n";
     for (int i = 0; i < vehicles.size(); i++) {
         cout << "Vehicle " << i + 1 << ":\n";
