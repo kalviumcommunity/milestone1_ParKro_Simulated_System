@@ -4,7 +4,18 @@
 #include <unordered_map>
 using namespace std;
 
-class Vehicle {
+class VehicleBase{
+    public:
+    virtual string getLicensePlate() = 0;
+    virtual void setLicensePlate(string LicensePlate)=0;
+    virtual string getownerDetails() = 0;
+    virtual void setownerDetails(string ownersDetails)=0;
+    virtual string getQRcode() = 0;
+    virtual void setQRcode(string QRcode)=0;
+    virtual ~VehicleBase(){}
+};
+
+class Vehicle:public VehicleBase {
 private:
 
     string LicensePlate;
@@ -71,7 +82,7 @@ public:
 };
 
 int main() {
-    vector<Vehicle*> vehicles;
+    vector<VehicleBase*> vehicles;
     vector<ParkingSpace> parkingSpaces;
     
     int n;
