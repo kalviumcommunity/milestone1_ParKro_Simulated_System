@@ -105,7 +105,7 @@ int main() {
     cout << "\nVehicle Details:\n";
     for (int i = 0; i < vehicles.size(); i++) {
         cout << "Vehicle " << i + 1 << ":\n";
-        cout << "License Plate: " << vehicles[i]->getLicensePlate() << endl;
+        cout << "License Plates: " << vehicles[i]->getLicensePlate() << endl;
         cout << "Owner Details: " << vehicles[i]->getownerDetails() << endl;
         cout << "QR Code: " << vehicles[i]->getQRcode() << endl;
         cout << endl;
