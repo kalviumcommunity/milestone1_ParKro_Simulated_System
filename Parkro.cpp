@@ -15,6 +15,7 @@ class VehicleBase{
     virtual ~VehicleBase(){}
 };
 
+//concept of inheritance
 class Vehicle:public VehicleBase {
 private:
 
@@ -61,6 +62,26 @@ public:
 };
 int Vehicle::totalVehicles=0;
 
+class Car : public Vehicle {
+private:
+    string carModel;
+
+public:
+    void setCarModel(string model) {
+        carModel = model;
+    }
+    string getCarModel() {
+        return carModel;
+    }
+
+    void displayCarInfo() {
+        cout << "Car License Plate: " << getLicensePlate() << endl;
+        cout << "Owner Details: " << getownerDetails() << endl;
+        cout << "QR Code: " << getQRcode() << endl;
+        cout << "Car Model: " << carModel << endl;
+    }
+};
+
 class ParkingSpace {
 private:
     string location;
@@ -90,31 +111,33 @@ int main() {
     cin >> n;
 
     for (int i = 0; i < n; i++) {
-        Vehicle* obj = new Vehicle();
-        string LicensePlate, ownerDetails, QRcode;
-        
-        cout << "Enter License Plate, Owner Details, and QR Code for Vehicle " << i + 1 << ": ";
-        cin >> LicensePlate >> ownerDetails >> QRcode;
-        
-        obj->setLicensePlate(LicensePlate);
-        obj->setownerDetails(ownerDetails);
-        obj->setQRcode(QRcode);
-        
-        vehicles.push_back(obj);
-    }
-    cout << "\nVehicle Details:\n";
-    for (int i = 0; i < vehicles.size(); i++) {
-        cout << "Vehicle " << i + 1 << ":\n";
-        cout << "License Plates: " << vehicles[i]->getLicensePlate() << endl;
-        cout << "Owner Details: " << vehicles[i]->getownerDetails() << endl;
-        cout << "QR Code: " << vehicles[i]->getQRcode() << endl;
-        cout << endl;
+        Car* car = new Car();
+        string LicensePlate, ownerDetails, QRcode, carModel;
 
+        cout << "Enter License Plate, Owner Details, QR Code, and Car Model for Car " << i + 1 << ": ";
+        cin >> LicensePlate >> ownerDetails >> QRcode >> carModel;
+
+        car->setLicensePlate(LicensePlate);
+        car->setownerDetails(ownerDetails);
+        car->setQRcode(QRcode);
+        car->setCarModel(carModel);
+
+        vehicles.push_back(car);
+    }
+
+    cout << "\nCar Details:\n";
+    for (int i = 0; i < vehicles.size(); i++) {
+        Car* car = dynamic_cast<Car*>(vehicles[i]);
+        if (car) {
+            cout << "Car " << i + 1 << ":\n";
+            car->displayCarInfo();
+            cout << endl;
+        }
         delete vehicles[i];
     }
+
     vehicles.clear();
     cout << "Total number of vehicles currently: " << Vehicle::getTotalVehicle() << endl;
-
 
     return 0;
 }
