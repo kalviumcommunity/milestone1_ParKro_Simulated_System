@@ -1,143 +1,136 @@
 #include <iostream>
 #include <vector>
 #include <string>
-#include <unordered_map>
 using namespace std;
 
-class VehicleBase{
-    public:
+// Base class
+class VehicleBase {
+public:
     virtual string getLicensePlate() = 0;
-    virtual void setLicensePlate(string LicensePlate)=0;
+    virtual void setLicensePlate(string LicensePlate) = 0;
     virtual string getownerDetails() = 0;
-    virtual void setownerDetails(string ownersDetails)=0;
-    virtual string getQRcode() = 0;
-    virtual void setQRcode(string QRcode)=0;
-    virtual ~VehicleBase(){}
+    virtual void setownerDetails(string ownersDetails) = 0;
+    virtual void displayInfo() = 0; // Polymorphic method
+    virtual ~VehicleBase() {}
 };
 
-//concept of inheritance
-class Vehicle:public VehicleBase {
+// Derived class 1: Car
+class Car : public VehicleBase {
 private:
-
     string LicensePlate;
     string ownersDetails;
-    string QRcode;
-
-    static int totalVehicles;
-
-public:
-    Vehicle(){
-        incrementTotalVehicle();
-    }
-    ~Vehicle(){
-        decrementTotalVehicle();
-    }
-    string getLicensePlate() {
-        return LicensePlate;
-    }
-    void setLicensePlate(string LicensePlate) {
-        this->LicensePlate = LicensePlate;
-    }
-    string getownerDetails() {
-        return ownersDetails;
-    }
-    void setownerDetails(string ownersDetails) {
-        this->ownersDetails = ownersDetails;
-    }
-    string getQRcode() {
-        return QRcode;
-    }
-    void setQRcode(string QRcode) {
-        this->QRcode = QRcode;
-    }
-    static void incrementTotalVehicle(){
-        totalVehicles++;
-    }
-    static void decrementTotalVehicle(){
-        totalVehicles--;
-    }
-    static int getTotalVehicle(){
-        return totalVehicles;
-    }
-};
-int Vehicle::totalVehicles=0;
-
-class Car : public Vehicle {
-private:
     string carModel;
 
 public:
+    string getLicensePlate() override {
+        return LicensePlate;
+    }
+    void setLicensePlate(string LicensePlate) override {
+        this->LicensePlate = LicensePlate;
+    }
+    string getownerDetails() override {
+        return ownersDetails;
+    }
+    void setownerDetails(string ownersDetails) override {
+        this->ownersDetails = ownersDetails;
+    }
     void setCarModel(string model) {
         carModel = model;
     }
     string getCarModel() {
         return carModel;
     }
-
-    void displayCarInfo() {
-        cout << "Car License Plate: " << getLicensePlate() << endl;
-        cout << "Owner Details: " << getownerDetails() << endl;
-        cout << "QR Code: " << getQRcode() << endl;
+    void displayInfo() override {
+        cout << "Car Details:\n";
+        cout << "License Plate: " << LicensePlate << endl;
+        cout << "Owner Details: " << ownersDetails << endl;
         cout << "Car Model: " << carModel << endl;
     }
 };
 
-class ParkingSpace {
+// Derived class 2: Bike
+class Bike : public VehicleBase {
 private:
-    string location;
-    bool Availability;
+    string LicensePlate;
+    string ownersDetails;
+    string bikeType;
 
 public:
-    string getlocation() {
-        return location;
+    string getLicensePlate() override {
+        return LicensePlate;
     }
-    void setlocation(string location) {
-        this->location = location;
+    void setLicensePlate(string LicensePlate) override {
+        this->LicensePlate = LicensePlate;
     }
-    bool getAvailability() {
-        return Availability;
+    string getownerDetails() override {
+        return ownersDetails;
     }
-    void setAvailability(bool Availability) {
-        this->Availability = Availability;
+    void setownerDetails(string ownersDetails) override {
+        this->ownersDetails = ownersDetails;
+    }
+    void setBikeType(string type) {
+        bikeType = type;
+    }
+    string getBikeType() {
+        return bikeType;
+    }
+    void displayInfo() override {
+        cout << "Bike Details:\n";
+        cout << "License Plate: " << LicensePlate << endl;
+        cout << "Owner Details: " << ownersDetails << endl;
+        cout << "Bike Type: " << bikeType << endl;
     }
 };
 
 int main() {
     vector<VehicleBase*> vehicles;
-    vector<ParkingSpace> parkingSpaces;
-    
+
     int n;
     cout << "Enter the number of vehicles: ";
     cin >> n;
 
     for (int i = 0; i < n; i++) {
-        Car* car = new Car();
-        string LicensePlate, ownerDetails, QRcode, carModel;
+        int type;
+        cout << "Enter vehicle type (1 for Car, 2 for Bike): ";
+        cin >> type;
 
-        cout << "Enter License Plate, Owner Details, QR Code, and Car Model for Car " << i + 1 << ": ";
-        cin >> LicensePlate >> ownerDetails >> QRcode >> carModel;
+        if (type == 1) {
+            Car* car = new Car();
+            string LicensePlate, ownerDetails, carModel;
 
-        car->setLicensePlate(LicensePlate);
-        car->setownerDetails(ownerDetails);
-        car->setQRcode(QRcode);
-        car->setCarModel(carModel);
+            cout << "Enter License Plate, Owner Details, and Car Model for Car " << i + 1 << ": ";
+            cin >> LicensePlate >> ownerDetails >> carModel;
 
-        vehicles.push_back(car);
+            car->setLicensePlate(LicensePlate);
+            car->setownerDetails(ownerDetails);
+            car->setCarModel(carModel);
+
+            vehicles.push_back(car);
+        } else if (type == 2) {
+            Bike* bike = new Bike();
+            string LicensePlate, ownerDetails, bikeType;
+
+            cout << "Enter License Plate, Owner Details, and Bike Type for Bike " << i + 1 << ": ";
+            cin >> LicensePlate >> ownerDetails >> bikeType;
+
+            bike->setLicensePlate(LicensePlate);
+            bike->setownerDetails(ownerDetails);
+            bike->setBikeType(bikeType);
+
+            vehicles.push_back(bike);
+        } else {
+            cout << "Invalid vehicle type. Try again.\n";
+            i--; // Retry input for this iteration
+        }
     }
 
-    cout << "\nCar Details:\n";
+    cout << "\nVehicle Details:\n";
     for (int i = 0; i < vehicles.size(); i++) {
-        Car* car = dynamic_cast<Car*>(vehicles[i]);
-        if (car) {
-            cout << "Car " << i + 1 << ":\n";
-            car->displayCarInfo();
-            cout << endl;
-        }
-        delete vehicles[i];
+        vehicles[i]->displayInfo(); // Polymorphic call
+        cout << endl;
+        delete vehicles[i]; // Clean up memory
     }
 
     vehicles.clear();
-    cout << "Total number of vehicles currently: " << Vehicle::getTotalVehicle() << endl;
-
     return 0;
 }
