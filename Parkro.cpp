@@ -130,6 +130,7 @@ int main() {
         cout << endl;
         delete vehicles[i]; // Clean up memory
     }
+    //no changes
 
     vehicles.clear();
     return 0;
