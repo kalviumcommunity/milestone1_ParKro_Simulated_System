@@ -3,82 +3,123 @@
 #include <string>
 using namespace std;
 
-// Base class
-class VehicleBase {
+// Interface for role display
+class RoleDisplay {
 public:
-    virtual string getLicensePlate() = 0;
-    virtual void setLicensePlate(string LicensePlate) = 0;
-    virtual string getownerDetails() = 0;
-    virtual void setownerDetails(string ownersDetails) = 0;
-    virtual void displayInfo() = 0; // Polymorphic method
+    virtual void displayRole() const = 0;
+    virtual ~RoleDisplay() {}
+};
+
+// Abstract base class
+class VehicleBase : public RoleDisplay {
+protected:
+    string licensePlate;
+    string ownerDetails;
+
+public:
+    virtual string getLicensePlate() const = 0;
+    virtual void setLicensePlate(const string& licensePlate) = 0;
+    virtual string getOwnerDetails() const = 0;
+    virtual void setOwnerDetails(const string& ownerDetails) = 0;
+    virtual void displayInfo() const = 0; // Polymorphic method
     virtual ~VehicleBase() {}
 };
 
-// Derived class 1: Car
+// Car class inheriting from VehicleBase
 class Car : public VehicleBase {
 private:
-    string LicensePlate;
-    string ownersDetails;
     string carModel;
 
 public:
-    string getLicensePlate() override {
-        return LicensePlate;
+    string getLicensePlate() const override {
+        return licensePlate;
     }
-    void setLicensePlate(string LicensePlate) override {
-        this->LicensePlate = LicensePlate;
+
+    void setLicensePlate(const string& licensePlate) override {
+        this->licensePlate = licensePlate;
     }
-    string getownerDetails() override {
-        return ownersDetails;
+
+    string getOwnerDetails() const override {
+        return ownerDetails;
     }
-    void setownerDetails(string ownersDetails) override {
-        this->ownersDetails = ownersDetails;
+
+    void setOwnerDetails(const string& ownerDetails) override {
+        this->ownerDetails = ownerDetails;
     }
-    void setCarModel(string model) {
+
+    void setCarModel(const string& model) {
         carModel = model;
     }
-    string getCarModel() {
+
+    string getCarModel() const {
         return carModel;
     }
-    void displayInfo() override {
+
+    void displayInfo() const override {
         cout << "Car Details:\n";
-        cout << "License Plate: " << LicensePlate << endl;
-        cout << "Owner Details: " << ownersDetails << endl;
+        cout << "License Plate: " << licensePlate << endl;
+        cout << "Owner Details: " << ownerDetails << endl;
         cout << "Car Model: " << carModel << endl;
+    }
+
+    void displayRole() const override {
+        cout << "Role: Car" << endl;
     }
 };
 
-// Derived class 2: Bike
+// Bike class inheriting from VehicleBase
 class Bike : public VehicleBase {
 private:
-    string LicensePlate;
-    string ownersDetails;
     string bikeType;
 
 public:
-    string getLicensePlate() override {
-        return LicensePlate;
+    string getLicensePlate() const override {
+        return licensePlate;
     }
-    void setLicensePlate(string LicensePlate) override {
-        this->LicensePlate = LicensePlate;
+
+    void setLicensePlate(const string& licensePlate) override {
+        this->licensePlate = licensePlate;
     }
-    string getownerDetails() override {
-        return ownersDetails;
+
+    string getOwnerDetails() const override {
+        return ownerDetails;
     }
-    void setownerDetails(string ownersDetails) override {
-        this->ownersDetails = ownersDetails;
+
+    void setOwnerDetails(const string& ownerDetails) override {
+        this->ownerDetails = ownerDetails;
     }
-    void setBikeType(string type) {
+
+    void setBikeType(const string& type) {
         bikeType = type;
     }
-    string getBikeType() {
+
+    string getBikeType() const {
         return bikeType;
     }
-    void displayInfo() override {
+
+    void displayInfo() const override {
         cout << "Bike Details:\n";
-        cout << "License Plate: " << LicensePlate << endl;
-        cout << "Owner Details: " << ownersDetails << endl;
+        cout << "License Plate: " << licensePlate << endl;
+        cout << "Owner Details: " << ownerDetails << endl;
         cout << "Bike Type: " << bikeType << endl;
+    }
+
+    void displayRole() const override {
+        cout << "Role: Bike" << endl;
+    }
+};
+
+// Assignment Reporter
+class VehicleReporter {
+private:
+    const VehicleBase& vehicle;
+
+public:
+    VehicleReporter(const VehicleBase& vehicle) : vehicle(vehicle) {}
+
+    void generateReport() const {
+        cout << "Generating report for vehicle:\n";
+        vehicle.displayInfo();
     }
 };
 
@@ -96,25 +137,25 @@ int main() {
 
         if (type == 1) {
             Car* car = new Car();
-            string LicensePlate, ownerDetails, carModel;
+            string licensePlate, ownerDetails, carModel;
 
             cout << "Enter License Plate, Owner Details, and Car Model for Car " << i + 1 << ": ";
-            cin >> LicensePlate >> ownerDetails >> carModel;
+            cin >> licensePlate >> ownerDetails >> carModel;
 
-            car->setLicensePlate(LicensePlate);
-            car->setownerDetails(ownerDetails);
+            car->setLicensePlate(licensePlate);
+            car->setOwnerDetails(ownerDetails);
             car->setCarModel(carModel);
 
             vehicles.push_back(car);
         } else if (type == 2) {
             Bike* bike = new Bike();
-            string LicensePlate, ownerDetails, bikeType;
+            string licensePlate, ownerDetails, bikeType;
 
             cout << "Enter License Plate, Owner Details, and Bike Type for Bike " << i + 1 << ": ";
-            cin >> LicensePlate >> ownerDetails >> bikeType;
+            cin >> licensePlate >> ownerDetails >> bikeType;
 
-            bike->setLicensePlate(LicensePlate);
-            bike->setownerDetails(ownerDetails);
+            bike->setLicensePlate(licensePlate);
+            bike->setOwnerDetails(ownerDetails);
             bike->setBikeType(bikeType);
 
             vehicles.push_back(bike);
@@ -125,12 +166,17 @@ int main() {
     }
 
     cout << "\nVehicle Details:\n";
-    for (int i = 0; i < vehicles.size(); i++) {
-        vehicles[i]->displayInfo(); // Polymorphic call
+    for (const auto& vehicle : vehicles) {
+        vehicle->displayInfo();
+        VehicleReporter reporter(*vehicle);
+        reporter.generateReport();
         cout << endl;
-        delete vehicles[i]; // Clean up memory
     }
-    //no changes
+
+    // Clean up memory
+    for (auto& vehicle : vehicles) {
+        delete vehicle;
+    }
 
     vehicles.clear();
     return 0;
